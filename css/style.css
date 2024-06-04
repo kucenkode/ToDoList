@@ -1,0 +1,90 @@
+html {
+    box-sizing: border-box;
+}
+
+*, *::after, *::before {
+    box-sizing: inherit;
+}
+
+body {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 400;
+    margin: 0;
+    background-color: rgb(255 255 255);
+}
+
+:root {
+    --header-color: rgb(146, 33, 71);
+    --main-part-color: rgb(255 255 255);
+    --filter-tasks-bg-color: rgb(255, 255, 255);
+    --filter-tasks-font-color: rgb(255, 255, 255);
+}
+
+.ubuntu-medium {
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.roboto-slab-light {
+    font-family: "Roboto Slab", serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-rows: 10vh 90vh;
+    max-width: 1728px;
+    width: 100vw;
+}
+
+.main-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100px;
+    background-color: var(--header-color);
+}
+
+#logo {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: calc(10px + 0.78125vw);
+    color: rgb(255, 255, 255);
+}
+
+.manage-tasks {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    justify-content: center;
+    background-color: var(--main-part-color);
+}
+
+#filter-tasks-by-status {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--filter-tasks-bg-color);
+    padding: 8%;
+}
+
+#filter-tasks-by-status a {
+    display: flex;
+    padding: 4px;
+    font-size: calc(4px + 0.78125vw);
+    color: var(--filter-tasks-font-color);
+    text-decoration: none;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+    background-color: black;
+    margin: 10%;
+    border-radius: 15px;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.tasks {
+
+}

@@ -1,1 +1,36 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/style.css" rel="stylesheet">
+    <script src="js/script.js" defer></script>
+    <title>ToDoList</title>
+</head>
+<body>
+    <div class="wrapper"> 
+        <header class="main-header">
+            <h1 id="logo" class="ubuntu-medium"> TO DO </h1>
+        </header>
+        <div class="manage-tasks" >
+            <nav id="filter-tasks-by-status" class="roboto-slab-light">
+                <a id="all-tasks" href=""> 
+                    <img src="img/icons8-задача-50.png"> Все 
+                </a>
+                <a id="completed-tasks" href=""> 
+                    <img src="img/icons8-задание-выполнено-50.png"> Выполненные 
+                </a>
+                <a id="incompleted-tasks" href="">
+                    <img src="img/icons8-доска-планшет-50.png"> В процессе 
+                </a>
+            </nav>
+            <div class="tasks">
+                <section class="existing-tasks">
+                    <h2> task </h2>
+                </section>
+                <input type="submit" value="Добавить задачу"> 
+            </div>
+        </div>
+    </div>
+</body>
+</html>
