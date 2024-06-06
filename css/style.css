@@ -17,7 +17,9 @@ body {
     --header-color: rgb(146, 33, 71);
     --main-part-color: rgb(255 255 255);
     --filter-tasks-bg-color: rgb(255, 255, 255);
-    --filter-tasks-font-color: rgb(255, 255, 255);
+    --filter-tasks-font-color: rgb(0, 0, 0);
+    --add-task-button-color: rgb(146, 33, 71);
+    --add-button-font-color: rgb(255, 255, 255);
 }
 
 .ubuntu-medium {
@@ -37,6 +39,7 @@ body {
     grid-template-rows: 10vh 90vh;
     max-width: 1728px;
     width: 100vw;
+    margin: auto;
 }
 
 .main-header {
@@ -44,7 +47,6 @@ body {
     justify-content: center;
     align-items: center;
     width: 100vw;
-    height: 100px;
     background-color: var(--header-color);
 }
 
@@ -64,21 +66,19 @@ body {
 #filter-tasks-by-status {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     background-color: var(--filter-tasks-bg-color);
-    padding: 8%;
+    padding: 6%;
 }
 
 #filter-tasks-by-status a {
     display: flex;
-    padding: 4px;
-    font-size: calc(4px + 0.78125vw);
+    padding: 8px;
+    font-size: calc(3px + 0.78125vw);
     color: var(--filter-tasks-font-color);
     text-decoration: none;
     box-shadow: 0 5px 5px rgba(0,0,0,0.2);
-    background-color: black;
-    margin: 10%;
-    border-radius: 15px;
+    margin: 3%;
+    border-radius: 10px;
     align-items: center;
     flex-wrap: nowrap;
     flex-direction: row;
@@ -86,5 +86,22 @@ body {
 }
 
 .tasks {
-
+    display: grid;
+    grid-template-rows: 90% 10%;
+    align-items: baseline;
+    background-color: var(--filter-tasks-bg-color);
+    padding: 6%;
 }
+
+#add-task-button {
+    display: flex;
+    font-size: calc(3px + 0.78125vw);
+    width: 60vw;
+    padding: 8px;
+    background-color: var(--add-task-button-color);
+    color: var(--add-button-font-color);
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+}
+
