@@ -18,9 +18,12 @@
                 <a id="completed-tasks" href=""> Выполненные </a>
                 <a id="incompleted-tasks" href=""> В процессе </a>
             </nav>
-            <div class="tasks">
-                <section class="existing-tasks"></section>
-                <input type="submit" id="add-task-button" value="Добавить задачу" class="roboto-slab-light"> 
+            <div class="container-no-tasks">
+                <ul class="existing-tasks"></ul>
+                <div class="container-input-with-a-status-circle">
+                    <span id="status-circle"> ◯ </span>
+                    <input type="text" id="add-task-input" class="roboto-slab-light" placeholder="Добавьте свою первую задачу..."> 
+                </div>
             </div>
         </div>
     </div>
