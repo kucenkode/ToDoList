@@ -76,8 +76,8 @@ body {
 
 #filter-tasks-by-status a {
     display: flex;
-    padding: 8px;
-    font-size: 1.1vmax;
+    padding: 3%;
+    font-size: 1vmax;
     background-color: #ffffff;
     color: var(--filter-tasks-font-color);
     text-decoration: none;
@@ -124,6 +124,39 @@ body {
     color: var(--add-button-font-color);
 }
 
+.popup {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    background-color: #fff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+    font-size: 1vmax;
+}
+
+.popup-buttons-container {
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: row;
+    margin: 0 auto;
+}
+
+.popup-buttons-container button {
+    background-color: rgb(129 100 166);
+    color: #fff;
+    border-radius: 8px;
+    border: none;
+    padding: 5px 10px;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+    font-size: 0.9vmax;
+
+    &:hover {
+        background-color: rgb(95, 69, 128);
+    }
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -155,7 +188,8 @@ textarea:focus, input:focus {
 }
 
 .task {
-    padding: 12px;
+    font-size: 1.1vmax;
+    padding: 1.5%;
     margin: 1%;
     background-color: var(--task-bg-color);
     color: white;
