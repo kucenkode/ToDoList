@@ -188,6 +188,8 @@ textarea:focus, input:focus {
 }
 
 .task {
+    display: flex;
+    align-items: center;
     font-size: 1.1vmax;
     padding: 1.5%;
     margin: 1%;
@@ -198,4 +200,18 @@ textarea:focus, input:focus {
     box-shadow: 0 5px 5px rgba(0,0,0,0.2);
     cursor: pointer;
     list-style-type: none;
+}
+
+.task img {
+    height: 1.9vmax;
+    opacity: 0.4;
+    margin-right: 2%;
+
+    &:hover {
+        opacity: 0.7;
+    }
+}
+
+.task-is-completed img {
+    opacity: 1;
 }

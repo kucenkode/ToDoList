@@ -6,7 +6,8 @@ const parent = document.querySelector('.wrapper');
 даже не нужно нажимать на нее. Потом если на эту кнопку нажать, то код для нее снова выполнится. Со второй кнопкой, "нет" (#confirm-no)
 такого нет, она срабатывает только при нажатии. А еще вроде иногда окно выводится даже если задача похожа (но не идентична).
 
-Пока там добавление только, остальное очень быстро делается, я это за один вечер сделаю, мне именно с проблемой разобраться нужно.
+Пока там добавление только, остальное очень быстро делается, я это за один вечер сделаю, мне именно с проблемой разобраться нужно. А еще 
+у тебя на компьютере не появляется полоса прокрутки?
 */
 
 (function() {
@@ -18,12 +19,16 @@ const parent = document.querySelector('.wrapper');
         const statusCircle = document.querySelector('#status-circle');
 
         //Создаем новый узел - это будет новой задачей
-        const newTask = document.createElement('li');
-        newTask.className = 'task';
-        newTask.textContent = addTaskInput.value;
+        const newTaskContainer =  document.createElement('div');
+        newTaskContainer.className = 'task';
+        newTaskContainer.innerHTML = 
+        `
+            <img id = "complete-task-circle" src = "img/completeTaskWhite.png"> 
+            <li> ${addTaskInput.value.trim()} </li>
+        `
 
         //Добавляем новую задачу к существующим (если их нет - будет первой)
-        existingTasks.appendChild(newTask);
+        existingTasks.prepend(newTaskContainer);
 
         //Меняем цвет кружочка, который отвечает за корректность ввода
         statusCircle.classList.add('status-circle-done');
@@ -74,14 +79,24 @@ const parent = document.querySelector('.wrapper');
         });
     }; 
 
-    function changeTheStatusOfTask() {
-        
+    function completeTask() {
+        if (event.target.id === 'complete-task-circle') {
+            const taskContainer = event.target.closest('div');
+            taskContainer.classList.toggle('task-is-completed');
+
+            document.querySelector('.existing-tasks').appendChild(taskContainer);
+        };
+    };
+
+    function filterTasks() {
+        const existingTasks = document.querySelector('.existing-tasks');
+        Array.from(existingTasks).filter(task => task.className === 'task-is-completed');
     };
 
     document.addEventListener('DOMContentLoaded', (event) => {
         const statusCircle = document.querySelector('#status-circle');
         const addTaskInput= document.querySelector('#add-task-input');
-
+  
         addTaskInput.addEventListener('click', () => {
             event.preventDefault();
             statusCircle.classList.remove('status-circle-incorrect-input', 'status-circle-no-changes', 'status-circle-done');
@@ -94,7 +109,7 @@ const parent = document.querySelector('.wrapper');
                     if (addTaskInput.value.trim().length === 0) {
                         statusCircle.classList.add('status-circle-incorrect-input');
                     }
-                    else if (Array.from(document.querySelectorAll('.task')).some((someTask) => someTask.textContent === addTaskInput.value.trim())) {
+                    else if (Array.from(document.querySelectorAll('.task')).some((someTask) => someTask.textContent.trim() === addTaskInput.value.trim())) {
                         statusCircle.classList.add('status-circle-no-changes');
 
                         //Выводим модальное окно, которое даёт выбор: добавить задачу или нет
@@ -102,9 +117,20 @@ const parent = document.querySelector('.wrapper');
                     }
                     else {
                         addTaskToList();
+                        addTaskInput.value = '';
                     };
                 };
             });
+        });
+
+        document.querySelector('.existing-tasks').addEventListener('click', (event) => {
+            event.preventDefault();
+            completeTask();
+        });
+
+        document.querySelector('#completed-tasks').addEventListener('click', (event) => {
+            event.preventDefault();
+            filterTasks();
         });
     });
 }) ()
