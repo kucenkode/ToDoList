@@ -79,18 +79,38 @@ const parent = document.querySelector('.wrapper');
         });
     }; 
 
+    /* Завершение задачи */
     function completeTask() {
         if (event.target.id === 'complete-task-circle') {
             const taskContainer = event.target.closest('div');
+
+            //меняем статус задачи на task-is-completed
             taskContainer.classList.toggle('task-is-completed');
+    
+            //Если у задачи убрали статус завершенной, то она поднимается обратно
+            if (!taskContainer.classList.contains('task-is-completed')) {
+                document.querySelector('.existing-tasks').insertBefore(taskContainer, document.querySelector('.existing-tasks').firstChild);
+            } else {
+                document.querySelector('.existing-tasks').appendChild(taskContainer);
+            }
+        }
+    }
 
-            document.querySelector('.existing-tasks').appendChild(taskContainer);
+    /* Фильтрация задач по статусу */
+    function filterTasksByStatus() {
+        const allTasks = document.querySelectorAll('.task');
+        const completedTasks = document.querySelectorAll('.task-is-completed');
+        const incompletedTasks = document.querySelectorAll('.task:not(.task-is-completed)');
+        
+        if (event.target.id === 'all-tasks') {
+            allTasks.forEach(task => task.classList.remove('hidden'));
+        } else if (event.target.id === 'completed-tasks') {
+            allTasks.forEach(task => task.classList.add('hidden'));
+            completedTasks.forEach(task => task.classList.remove('hidden'));
+        } else if (event.target.id === 'incompleted-tasks') {
+            allTasks.forEach(task => task.classList.add('hidden'));
+            incompletedTasks.forEach(task => task.classList.remove('hidden'));
         };
-    };
-
-    function filterTasks() {
-        const existingTasks = document.querySelector('.existing-tasks');
-        Array.from(existingTasks).filter(task => task.className === 'task-is-completed');
     };
 
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -123,14 +143,14 @@ const parent = document.querySelector('.wrapper');
             });
         });
 
+        // при нажатии на круг с галочкой завершит выполнение задачи
         document.querySelector('.existing-tasks').addEventListener('click', (event) => {
             event.preventDefault();
             completeTask();
         });
 
-        document.querySelector('#completed-tasks').addEventListener('click', (event) => {
-            event.preventDefault();
-            filterTasks();
-        });
+        document.querySelector('#all-tasks').addEventListener('click', filterTasksByStatus);
+        document.querySelector('#completed-tasks').addEventListener('click', filterTasksByStatus);
+        document.querySelector('#incompleted-tasks').addEventListener('click', filterTasksByStatus);
     });
 }) ()
