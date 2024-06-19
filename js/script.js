@@ -1,15 +1,5 @@
 const parent = document.querySelector('.wrapper');
 
-/* 
-Проблема: Если задача уже есть в списке, то должно выводиться модальное окно с возможностью выбора
-добавить такую же задачу или нет. Но как только окно выводится, выполняется код для кнопки "да" (#confirm-yes)
-даже не нужно нажимать на нее. Потом если на эту кнопку нажать, то код для нее снова выполнится. Со второй кнопкой, "нет" (#confirm-no)
-такого нет, она срабатывает только при нажатии. А еще вроде иногда окно выводится даже если задача похожа (но не идентична).
-
-Пока там добавление только, остальное очень быстро делается, я это за один вечер сделаю, мне именно с проблемой разобраться нужно. А еще 
-у тебя на компьютере не появляется полоса прокрутки?
-*/
-
 (function() {
     /* Добавление задачи в список */
     //Функция добавления задачи в список
@@ -25,6 +15,7 @@ const parent = document.querySelector('.wrapper');
         `
             <img id = "complete-task-circle" src = "img/completeTaskWhite.png"> 
             <li> ${addTaskInput.value.trim()} </li>
+            <span id = "delete-btn"> ✕ </button>
         `
 
         //Добавляем новую задачу к существующим (если их нет - будет первой)
@@ -32,52 +23,40 @@ const parent = document.querySelector('.wrapper');
 
         //Меняем цвет кружочка, который отвечает за корректность ввода
         statusCircle.classList.add('status-circle-done');
-        changeThePositionOfInputWhenFirstTaskIsAdded();
+        if (!document.querySelector('#delete-all-tasks-button')) changeThePositionOfInputWhenFirstTaskIsAdded();
     };
 
     //Функция, которая переместит область добавления задачи вниз
     function changeThePositionOfInputWhenFirstTaskIsAdded() {
         const containerTasks = document.querySelector('.container-no-tasks');
-        const existingTasks = document.querySelector('.existing-tasks');
         const addTaskInput = document.querySelector('#add-task-input');
 
-        if (existingTasks.children.length <= 1) {
-            containerTasks.classList.toggle('container-with-tasks');
-            addTaskInput.placeholder = 'Добавить новую задачу';
-        }
+        //Меняем положение input
+        containerTasks.classList.toggle('container-with-tasks');
+        addTaskInput.placeholder = 'Добавить новую задачу';
+
+        //Сразу добавляем кнопку для удаления всех задач
+        const deleteAllTasksButton = document.createElement('button');
+        deleteAllTasksButton.id = 'delete-all-tasks-button';
+        deleteAllTasksButton.textContent = 'Удалить все задачи';
+        const containerAddTaskAndDeleteAllTasks = document.querySelector('.container-add-task-and-delete-all-tasks');
+
+        //Выравниваем поле ввода и кнопку удаления всех задач
+        containerAddTaskAndDeleteAllTasks.style.display = 'grid';
+        containerAddTaskAndDeleteAllTasks.style.gridTemplateColumns = '84% 15%';
+
+        containerAddTaskAndDeleteAllTasks.appendChild(deleteAllTasksButton);
     };
 
-    /* ПРОБЛЕМА МОЖЕТ БЫТЬ ЗДЕСЬ */
-    //Функция, которая выводит модальное окно, если задача уже существует
-    function confirmIfTaskExists() {
-        const confirmationModal = document.createElement('dialog');
-        confirmationModal.id = 'tasks-exists-modal';
-        confirmationModal.className = 'popup';
-        confirmationModal.innerHTML = `
-            <h3> Подобная задача уже существует. Всё равно добавить? </h3>
-            <div class = 'popup-buttons-container'>
-                <button id = 'confirm-yes'> Да </button>
-                <button id = 'confirm-no'> Нет </button>
-            </div>
-        `;
-        parent.appendChild(confirmationModal);
+    //Если задача существует
+    function showModal() { 
+        document.querySelector('.popup-container').classList.remove('hidden');
+        document.querySelector('#tasks-exists-modal').style.display = 'block';
+    };
 
-        const buttonYes = confirmationModal.querySelector('#confirm-yes');
-        const buttonNo = confirmationModal.querySelector('#confirm-no');
-
-        confirmationModal.showModal();
-
-        //В модальном окне выбрали добавить задачу
-        buttonYes.addEventListener('click', () => {
-            console.log('hello');
-            //confirmationModal.remove(); строка пока закомментирована, так как иначе окно сразу будет закрываться
-        });
-
-        //В модальном окне выбрали не добавлять задачу
-        buttonNo.addEventListener('click', () => {
-            confirmationModal.remove();
-        });
-    }; 
+    function hideModal() { 
+        document.querySelector('.popup-container').classList.add('hidden');
+    };
 
     /* Завершение задачи */
     function completeTask() {
@@ -113,35 +92,59 @@ const parent = document.querySelector('.wrapper');
         };
     };
 
+    /* Удаление задач */
+    //Удаление определенной задачи 
+    function deleteTask() {
+        if (event.target.id === 'delete-btn') {
+            event.target.closest('div').remove();
+        };
+    };
+
+    //Удаление всех задач
+    function deleteAllTasks() {
+        if (event.target.id === 'delete-all-tasks-button') {
+            document.querySelector('.existing-tasks').innerHTML = '';
+        };
+    };
+
     document.addEventListener('DOMContentLoaded', (event) => {
         const statusCircle = document.querySelector('#status-circle');
         const addTaskInput= document.querySelector('#add-task-input');
-  
-        addTaskInput.addEventListener('click', () => {
+
+        addTaskInput.addEventListener('click', (event) => {
             event.preventDefault();
             statusCircle.classList.remove('status-circle-incorrect-input', 'status-circle-no-changes', 'status-circle-done');
-
-            addTaskInput.addEventListener('keydown', (event) => {
-                if (event.keyCode === 13) {
-                    statusCircle.classList.remove('status-circle-incorrect-input', 'status-circle-no-changes', 'status-circle-done');
-
-                     // Три варианта: ничего не ввели, задача уже есть в списке или все верно
-                    if (addTaskInput.value.trim().length === 0) {
-                        statusCircle.classList.add('status-circle-incorrect-input');
-                    }
-                    else if (Array.from(document.querySelectorAll('.task')).some((someTask) => someTask.textContent.trim() === addTaskInput.value.trim())) {
-                        statusCircle.classList.add('status-circle-no-changes');
-
-                        //Выводим модальное окно, которое даёт выбор: добавить задачу или нет
-                        if(!document.querySelector('#tasks-exists-modal')) confirmIfTaskExists();
-                    }
-                    else {
-                        addTaskToList();
-                        addTaskInput.value = '';
-                    };
-                };
-            });
         });
+
+        addTaskInput.addEventListener('keydown', (event) => {
+            if (event.keyCode === 13) {
+                statusCircle.classList.remove('status-circle-incorrect-input', 'status-circle-no-changes', 'status-circle-done');
+
+                // Три варианта: ничего не ввели, задача уже есть в списке или все верно
+                if (addTaskInput.value.trim().length === 0) {
+                    statusCircle.classList.add('status-circle-incorrect-input');
+                }
+                else if (Array.from(document.querySelectorAll('li')).some((someTask) => someTask.textContent.trim() === addTaskInput.value.trim())) {
+                    statusCircle.classList.add('status-circle-no-changes');
+
+                    //Выводим модальное окно, которое даёт выбор: добавить задачу или нет
+                    showModal();
+                }
+                else {
+                    addTaskToList();
+                    addTaskInput.value = '';
+                };
+            };
+        });
+
+        // Устанавливаем обработчики на кнопки
+        document.querySelector('#confirm-yes').addEventListener('click', (event) => { 
+            event.preventDefault();
+            addTaskToList();
+            hideModal();
+        });
+
+        document.querySelector('#confirm-no').addEventListener('click', hideModal);
 
         // при нажатии на круг с галочкой завершит выполнение задачи
         document.querySelector('.existing-tasks').addEventListener('click', (event) => {
@@ -149,8 +152,25 @@ const parent = document.querySelector('.wrapper');
             completeTask();
         });
 
+        //при нажатии на "Все" отобразит и выполненные, и незавершенные задачи
         document.querySelector('#all-tasks').addEventListener('click', filterTasksByStatus);
+
+        //при нажатии на "Выполненные" отобразит завершенные задачи
         document.querySelector('#completed-tasks').addEventListener('click', filterTasksByStatus);
+
+        //при нажатии на "В процессе" отобразит незавершенные задачи
         document.querySelector('#incompleted-tasks').addEventListener('click', filterTasksByStatus);
+    
+        //При нажатии на кнопку удаляет задачу
+        document.querySelector('.existing-tasks').addEventListener('click', () => {
+            event.preventDefault();
+            deleteTask();
+        });
+
+        //При нажатии на кнопку удаляет все задачи
+        document.querySelector('.container-add-task-and-delete-all-tasks').addEventListener('click', () => {
+            event.preventDefault();
+            deleteAllTasks();
+        });
     });
 }) ()

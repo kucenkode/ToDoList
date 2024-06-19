@@ -124,12 +124,22 @@ body {
     color: var(--add-button-font-color);
 }
 
-.popup {
+.popup-container {
+    display: flex;
+    align-items: center;
     position: fixed;
     z-index: 1;
     left: 0;
     top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+}
+
+.popup {
     background-color: #fff;
+    position: fixed;
+    z-index: 2; 
     border: none;
     border-radius: 15px;
     box-shadow: 0 5px 5px rgba(0,0,0,0.2);
@@ -188,7 +198,8 @@ textarea:focus, input:focus {
 }
 
 .task {
-    display: flex;
+    display: grid;
+    grid-template-columns: 5% 93% 5%;
     align-items: center;
     font-size: 1.1vmax;
     padding: 1.5%;
@@ -216,6 +227,38 @@ textarea:focus, input:focus {
     opacity: 1;
 }
 
+.task #delete-btn {
+    height: 1.9vmax;
+    opacity: 0.4;
+    margin-right: 2%;
+
+    &:hover {
+        opacity: 1;
+    }
+}
+
 .hidden {
     display: none;
+}
+
+.container-add-task-and-delete-all-tasks {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+#delete-all-tasks-button {
+    font-family: "Roboto Slab", serif;
+    background-color: rgb(255, 255, 255);
+    color: rgb(59, 42, 82);
+    border-radius: 8px;
+    border-color: rgb(59, 42, 82);
+    padding: 5px 10px;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.2);
+    font-size: 0.9vmax;
+
+    &:hover {
+        background-color: rgb(95, 69, 128);
+        color: rgb(255, 255, 255);
+    }
 }

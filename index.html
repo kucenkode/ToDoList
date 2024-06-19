@@ -20,11 +20,22 @@
             </nav>
             <div class="container-no-tasks">
                 <ul class="existing-tasks"></ul>
-                <div class="container-input-with-a-status-circle">
-                    <span id="status-circle"> ◯ </span>
-                    <input type="text" id="add-task-input" class="roboto-slab-light" placeholder="Добавьте свою первую задачу..."> 
+                <div class="container-add-task-and-delete-all-tasks">
+                    <div class="container-input-with-a-status-circle">
+                        <span id="status-circle"> ◯ </span>    
+                        <input type="text" id="add-task-input" class="roboto-slab-light" placeholder="Добавьте свою первую задачу..."> 
+                    </div>
                 </div>
-            </div>
+            </div> 
+        </div>
+        <div class="popup-container hidden">
+            <dialog id="tasks-exists-modal" class="popup">
+                <h3> Подобная задача уже существует. Всё равно добавить? </h3>
+                <section class = 'popup-buttons-container'>
+                    <button id = 'confirm-yes' > Да </button>
+                    <button id = 'confirm-no'> Нет </button>
+                </section>
+            </dialog>
         </div>
     </div>
 </body>
