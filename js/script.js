@@ -23,29 +23,40 @@ const parent = document.querySelector('.wrapper');
 
         //Меняем цвет кружочка, который отвечает за корректность ввода
         statusCircle.classList.add('status-circle-done');
-        if (!document.querySelector('#delete-all-tasks-button')) changeThePositionOfInputWhenFirstTaskIsAdded();
+
+        if (existingTasks.children.length === 1) changeThePositionOfInputWhenFirstTaskIsAdded();
     };
 
     //Функция, которая переместит область добавления задачи вниз
     function changeThePositionOfInputWhenFirstTaskIsAdded() {
         const containerTasks = document.querySelector('.container-no-tasks');
         const addTaskInput = document.querySelector('#add-task-input');
+        const existingTasks = document.querySelector('.existing-tasks');
 
         //Меняем положение input
         containerTasks.classList.toggle('container-with-tasks');
         addTaskInput.placeholder = 'Добавить новую задачу';
-
+        
         //Сразу добавляем кнопку для удаления всех задач
-        const deleteAllTasksButton = document.createElement('button');
-        deleteAllTasksButton.id = 'delete-all-tasks-button';
-        deleteAllTasksButton.textContent = 'Удалить все задачи';
-        const containerAddTaskAndDeleteAllTasks = document.querySelector('.container-add-task-and-delete-all-tasks');
+        if (!document.querySelector('#delete-all-tasks-button')) {
+            const deleteAllTasksButton = document.createElement('button');
+            deleteAllTasksButton.id = 'delete-all-tasks-button';
+            deleteAllTasksButton.textContent = 'Удалить все задачи';
+            const containerAddTaskAndDeleteAllTasks = document.querySelector('.container-add-task-and-delete-all-tasks');
 
-        //Выравниваем поле ввода и кнопку удаления всех задач
-        containerAddTaskAndDeleteAllTasks.style.display = 'grid';
-        containerAddTaskAndDeleteAllTasks.style.gridTemplateColumns = '84% 15%';
+            //Выравниваем поле ввода и кнопку удаления всех задач
+            containerAddTaskAndDeleteAllTasks.style.display = 'grid';
+            containerAddTaskAndDeleteAllTasks.style.gridTemplateColumns = '84% 15%';
 
-        containerAddTaskAndDeleteAllTasks.appendChild(deleteAllTasksButton);
+            containerAddTaskAndDeleteAllTasks.appendChild(deleteAllTasksButton);
+        };
+
+        if (document.querySelector('#delete-all-tasks-button') && existingTasks.children.length === 0) {
+            document.querySelector('#delete-all-tasks-button').remove();
+
+            const containerAddTaskAndDeleteAllTasks = document.querySelector('.container-add-task-and-delete-all-tasks');
+            containerAddTaskAndDeleteAllTasks.style.display = 'flex';
+        };
     };
 
     //Если задача существует
@@ -97,6 +108,10 @@ const parent = document.querySelector('.wrapper');
     function deleteTask() {
         if (event.target.id === 'delete-btn') {
             event.target.closest('div').remove();
+            if (document.querySelector('.existing-tasks').children.length === 0) {
+                changeThePositionOfInputWhenFirstTaskIsAdded();
+
+            }
         };
     };
 
@@ -104,6 +119,7 @@ const parent = document.querySelector('.wrapper');
     function deleteAllTasks() {
         if (event.target.id === 'delete-all-tasks-button') {
             document.querySelector('.existing-tasks').innerHTML = '';
+            changeThePositionOfInputWhenFirstTaskIsAdded();
         };
     };
 
